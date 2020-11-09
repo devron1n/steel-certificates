@@ -1,0 +1,427 @@
+swagger: "2.0"
+
+info:
+  version: "0.48"
+  title: "Steel Certificates"
+
+parameters:
+
+  id:
+    name: id
+    in: path
+    description: ID (hash) of the certificate
+    required: true
+    type: string
+    maxLength: 64
+  certnumber:
+    name: certnumber
+    in: path
+    description: number of the certificate
+    required: true
+    type: string
+    maxLength: 20
+  certdate:
+    name: certdate
+    in: path
+    description: date of the certificate
+    required: true
+    type: string
+    maxLength: 8
+  manufacturercode:
+    name: manufacturercode
+    in: path
+    description: manufacturercode of the certificate
+    required: true
+    type: string
+    maxLength: 20
+  companycode:
+    name: companycode
+    in: path
+    description: companycode of the certificate
+    required: true
+    type: string
+    maxLength: 20
+  certcheckcode:
+    name: certcheckcode
+    in: path
+    description: certcheckcode for the certificate
+    required: true
+    type: integer
+    maxLength: 20
+  productname:
+    name: productname
+    in: path
+    description: product name for the certificate
+    required: true
+    type: string
+    maxLength: 120
+  status:
+    name: status
+    in: path
+    description: status of the certificate
+    required: true
+    type: string
+    maxLength: 3
+  certurl:
+    name: certurl
+    in: path
+    description: certurl
+    required: true
+    type: string
+    maxLength: 120
+  checkcsum:
+    name: checkcsum
+    in: path
+    description: checkcsum
+    required: true
+    type: string
+    maxLength: 120  
+
+paths:
+
+
+  /certificate:
+
+    post:
+      summary: Add a new certificate
+      operationId: create
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Certificate atributes (must be send as transient data)
+        required: true
+        schema:
+          type: object
+          properties:
+            certnumber:
+              type: string
+            certdate:
+              type: string  
+            manufacturercode:
+              type: string  
+            certcheckcode:
+              type: integer  
+            productname:
+              type: string  
+            status:
+              type: string  
+            certurl:
+              type: string  
+      responses:
+        201:
+          description: Certificate Created
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+              Code:
+                type: string
+              Payload:
+                type: object
+                properties:
+                  companycode:
+                    type: string
+                  productname:
+                    type: string
+                  status:
+                    type: string
+                  certurl:
+                    type: string
+                  checkcsum:
+                    type: string
+                  id:
+                    type: string
+        409:
+          description: Certificate Already Exists
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string      
+        500:
+          description: Internal Error  
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string                
+
+  /certificate/{id}:
+
+    get:
+      operationId: getByID
+      summary: Get certificate by ID
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/id'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+              Code:
+                type: string
+              Payload:
+                type: object
+                properties:
+                  companycode:
+                    type: string
+                  productname:
+                    type: string
+                  status:
+                    type: string
+                  certurl:
+                    type: string
+                  checkcsum:
+                    type: string
+                  id:
+                    type: string
+        404:
+          description: Not Found
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string      
+        500:
+          description: Internal Error  
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string                
+
+  /certificate/find/{certnumber}/{certdate}/{companycode}/{manufacturercode}/{certcheckcode}/{status}:
+  
+    get:
+      operationId: getByIDAttributes
+      summary: Get certificate by certNumber, certDate, companyCode, manufacturerCode, certCheckcode, status
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/certnumber'
+      - $ref: '#/parameters/certdate'
+      - $ref: '#/parameters/companycode'
+      - $ref: '#/parameters/manufacturercode'
+      - $ref: '#/parameters/certcheckcode'
+      - $ref: '#/parameters/status'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+              Code:
+                type: string
+              Payload:
+                type: object
+                properties:
+                  companycode:
+                    type: string
+                  productname:
+                    type: string
+                  status:
+                    type: string
+                  certurl:
+                    type: string
+                  checkcsum:
+                    type: string
+                  id:
+                    type: string
+        404:
+          description: Not Found
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string
+        500:
+          description: Internal Error
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string
+
+  /certificates/{checkcsum}:
+
+    get:
+      operationId: findByChecksum
+      summary: Find all certificates by checkcsum
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/checkcsum'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+              Code:
+                type: string
+              Payload:
+                type: object
+                properties:
+                  companycode:
+                    type: string
+                  productname:
+                    type: string
+                  status:
+                    type: string
+                  certurl:
+                    type: string
+                  checkcsum:
+                    type: string
+                  id:
+                    type: string
+        404:
+          description: Not Found
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string
+        500:
+          description: Internal Error
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string
+
+  /certificates/find/{certnumber}/{certdate}/{companycode}/{manufacturercode}/{certcheckcode}:
+
+    get:
+      operationId: findByChecksumAttributes
+      summary: Find all certificates by certNumber, certDate, companyCode, manufacturerCode, certCheckcode
+      produces:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/certnumber'
+      - $ref: '#/parameters/certdate'
+      - $ref: '#/parameters/companycode'
+      - $ref: '#/parameters/manufacturercode'
+      - $ref: '#/parameters/certcheckcode'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+              Code:
+                type: string
+              Payload:
+                type: object
+                properties:
+                  companycode:
+                    type: string
+                  productname:
+                    type: string
+                  status:
+                    type: string
+                  certurl:
+                    type: string
+                  checkcsum:
+                    type: string
+                  id:
+                    type: string
+        404:
+          description: Not Found
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string
+        500:
+          description: Internal Error
+          schema:
+            type: object
+            properties:
+              Error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  status:
+                    type: string

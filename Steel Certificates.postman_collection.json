@@ -1,0 +1,174 @@
+{
+  "info": {
+    "_postman_id": "b0f85d0c-7a7c-49e6-8a01-4a6336881eaf",
+    "name": "Steel Certificates",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "getToken",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "{{clientId}}",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "{{clientSecret}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}/oauth/token?grant_type=client_credentials",
+          "host": ["{{URL}}"],
+          "path": ["oauth", "token"],
+          "query": [
+            {
+              "key": "grant_type",
+              "value": "client_credentials"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createCertificate",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "xxx",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"function\": \"create\",\n    \"transient\": {\n        \"certnumber\": \"30181003\",\n        \"certdate\": \"30181003\",\n        \"manufacturercode\": \"30181003\",\n        \"certcheckcode\": \"30181003\",\n        \"productname\": \"30181003\",\n        \"status\": \"001\",\n        \"certurl\": \"30181003\"\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://hyperledger-fabric.cfapps.eu10.hana.ondemand.com/api/v1/chaincodes/{{chaincodeId}}/{{chaincodeVersion}}/invoke",
+          "protocol": "https",
+          "host": [
+            "hyperledger-fabric",
+            "cfapps",
+            "eu10",
+            "hana",
+            "ondemand",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "chaincodes",
+            "{{chaincodeId}}",
+            "{{chaincodeVersion}}",
+            "invoke"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getCertificateById",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "xxx",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://hyperledger-fabric.cfapps.eu10.hana.ondemand.com/api/v1/chaincodes/{{chaincodeId}}/{{chaincodeVersion}}/certificate/{{certificateId}}",
+          "protocol": "https",
+          "host": [
+            "hyperledger-fabric",
+            "cfapps",
+            "eu10",
+            "hana",
+            "ondemand",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "chaincodes",
+            "{{chaincodeId}}",
+            "{{chaincodeVersion}}",
+            "certificate",
+            "{{certificateId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "findCertificate",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "xxx",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://hyperledger-fabric.cfapps.eu10.hana.ondemand.com/api/v1/chaincodes/{{chaincodeId}}/{{chaincodeVersion}}/certificate/find/{{certNumber}}/{{certDate}}/{{companyCode}}/{{manufacturerCode}}/{{certCheckCode}}",
+          "protocol": "https",
+          "host": [
+            "hyperledger-fabric",
+            "cfapps",
+            "eu10",
+            "hana",
+            "ondemand",
+            "com"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "chaincodes",
+            "{{chaincodeId}}",
+            "{{chaincodeVersion}}",
+            "certificate",
+            "find",
+            "{{certNumber}}",
+            "{{certDate}}",
+            "{{companyCode}}",
+            "{{manufacturerCode}}",
+            "{{certCheckCode}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

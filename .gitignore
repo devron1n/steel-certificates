@@ -1,0 +1,11 @@
+.idea/
+.vscode/
+.DS_Store
+*.lock
+!yarn.lock
+*.zip
+steel-certificates.solution.go
+__MACOSX
+web/
+test-certificate.json
+test
